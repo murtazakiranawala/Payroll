@@ -15,8 +15,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
+# No .env file is created here on purpose: Laravel falls back cleanly to
+# real process environment variables when .env is absent (this is the
+# standard pattern for containerized deploys), and copying .env.example's
+# leftover local-dev defaults (e.g. DB_PORT=3306, a MySQL default) in was
+# exactly what caused this app to try connecting to Render's Postgres
+# database on the wrong port.
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist \
-    && cp -n .env.example .env \
     && mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
