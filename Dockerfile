@@ -26,9 +26,11 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-di
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Serve the public/ directory, not the repo root.
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf
+# Serve public/ (not the repo root) with AllowOverride enabled - without it
+# Apache silently ignores public/.htaccess and every "pretty URL" route
+# (anything but /) 404s before Laravel ever sees the request, since only
+# literal existing files (like /index.php itself) get served without it.
+COPY docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh

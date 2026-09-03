@@ -18,8 +18,14 @@ services:
         value: production
       - key: APP_DEBUG
         value: "false"
+      # generateValue: true does NOT work here - it produces a plain random
+      # string, not the base64: 32-byte key Laravel's encrypter requires, and
+      # every request needing session/cookie encryption throws. Set this by
+      # hand in the Render dashboard (Environment tab) instead - not
+      # committed here, since it's a real encryption secret and this repo
+      # may end up public.
       - key: APP_KEY
-        generateValue: true
+        sync: false
       - key: APP_URL
         value: https://payroll.onrender.com
       - key: DB_CONNECTION
