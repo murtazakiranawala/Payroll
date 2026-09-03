@@ -11,6 +11,7 @@
 /vendor
 .env
 .env.backup
+~$*.doc*
 .env.production
 .phpactor.json
 Homestead.json
