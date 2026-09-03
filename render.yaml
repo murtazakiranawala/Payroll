@@ -22,7 +22,6 @@ services:
         generateValue: true
       - key: APP_URL
         value: https://payroll.onrender.com
-        sync: false
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_URL
