@@ -39,6 +39,11 @@
             <i class="bi bi-bar-chart-steps"></i> Staff Grades
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-2 {{ request()->routeIs('increments.*') ? 'active' : '' }}" href="{{ route('increments.bulk') }}">
+            <i class="bi bi-graph-up-arrow"></i> Increments
+        </a>
+    </li>
 </ul>
 
 <div class="sidebar-group-label">Finance</div>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BankAdviceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GlAccountMappingController;
+use App\Http\Controllers\IncrementController;
 use App\Http\Controllers\JournalVoucherController;
 use App\Http\Controllers\PayrollCycleController;
 use App\Http\Controllers\PayslipController;
@@ -42,6 +43,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('employees/{employee}/salary-structure/create', [SalaryStructureController::class, 'create'])->name('salary-structures.create');
         Route::post('employees/{employee}/salary-structure', [SalaryStructureController::class, 'store'])->name('salary-structures.store');
+
+        // Static "bulk" must be registered before the "{employee}" wildcard below.
+        Route::get('increments/bulk', [IncrementController::class, 'bulkForm'])->name('increments.bulk');
+        Route::post('increments/bulk', [IncrementController::class, 'bulkStore'])->name('increments.bulk-store');
+        Route::get('employees/{employee}/increment', [IncrementController::class, 'create'])->name('increments.create');
+        Route::post('employees/{employee}/increment', [IncrementController::class, 'store'])->name('increments.store');
     });
     Route::get('salary-structures', [SalaryStructureController::class, 'index'])->name('salary-structures.index');
 

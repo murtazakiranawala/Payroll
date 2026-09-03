@@ -59,4 +59,23 @@ class StaffGrade extends Model
     {
         return $this->yearly_increment === null ? null : 2 * (float) $this->yearly_increment;
     }
+
+    /**
+     * Policy §7's increment quantum by performance rating: below average = 0,
+     * average = the standard increment, above average = 2x the standard
+     * increment. Null if this grade has no increment amount set (TBA).
+     */
+    public function incrementFor(string $rating): ?float
+    {
+        if ($this->yearly_increment === null) {
+            return null;
+        }
+
+        return match ($rating) {
+            'below_average' => 0.0,
+            'average' => (float) $this->yearly_increment,
+            'above_average' => 2 * (float) $this->yearly_increment,
+            default => null,
+        };
+    }
 }

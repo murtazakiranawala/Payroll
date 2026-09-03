@@ -51,9 +51,14 @@
 
     <div class="col-md-6">
         <div class="card shadow-sm mb-3">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Salary Structure</span>
-                <a href="{{ route('salary-structures.create', $employee) }}" class="small">Add new version</a>
+                <div class="d-flex gap-3">
+                    @if ($employee->staffGrade && $employee->staffGrade->yearly_increment !== null && $employee->salaryStructures->firstWhere('is_active', true))
+                        <a href="{{ route('increments.create', $employee) }}" class="small"><i class="bi bi-graph-up-arrow"></i> Give increment</a>
+                    @endif
+                    <a href="{{ route('salary-structures.create', $employee) }}" class="small">Add new version</a>
+                </div>
             </div>
             <div class="card-body">
                 @if ($employee->staffGrade)
@@ -78,6 +83,9 @@
                     <div class="small text-muted mb-2">
                         Effective from {{ $structure->effective_from->format('d M Y') }} &middot;
                         CTC: @if($structure->ctc)<x-money :value="$structure->ctc" />@else &mdash; @endif
+                        @if ($structure->performance_rating)
+                            &middot; <span class="badge bg-light text-dark border">{{ \App\Models\EmployeeSalaryStructure::RATING_LABELS[$structure->performance_rating] }} review</span>
+                        @endif
                     </div>
                     <table class="table table-sm mb-0">
                         <tr><th>Basic</th><td><x-money :value="$structure->basic" /></td></tr>

@@ -8,6 +8,13 @@ class EmployeeSalaryStructure extends Model
 {
     protected $fillable = [
         'employee_id', 'effective_from', 'ctc', 'basic', 'is_active', 'created_by',
+        'performance_rating', 'remarks',
+    ];
+
+    public const RATING_LABELS = [
+        'below_average' => 'Below Average',
+        'average' => 'Average',
+        'above_average' => 'Above Average',
     ];
 
     protected function casts(): array
