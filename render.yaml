@@ -1,0 +1,40 @@
+databases:
+  - name: payroll-db
+    plan: free
+    databaseName: payroll
+    user: payroll
+
+services:
+  - type: web
+    name: payroll
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /login
+    envVars:
+      - key: APP_NAME
+        value: "Payroll - Majma al Markazi"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        sync: false
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        fromDatabase:
+          name: payroll-db
+          property: connectionString
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: CACHE_STORE
+        value: file
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: AIIMS_DRIVER
+        value: mock
+      - key: FINANCIAL_ERP_DRIVER
+        value: mock
